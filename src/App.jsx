@@ -20,6 +20,8 @@ import { AuthProvider, useAuthContext } from './contexts/AuthContext';
 import Profile from './components/Profile';
 import AdminPanel from './components/AdminPanel';
 import Favorites from './components/Favorites';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { MaterialsProvider } from "./contexts/MaterialsContext";
 
 function InnerApp() {
   const { verificationLog, isAdmin } = useAuthContext();
@@ -54,13 +56,17 @@ function InnerApp() {
 
 function App() {
   return (
-    <CartProvider>
-      <AuthProvider>
-        <Router>
-          <InnerApp /> 
-        </Router>
-      </AuthProvider>
-    </CartProvider>
+    <SettingsProvider>
+      <MaterialsProvider>
+        <CartProvider>
+          <AuthProvider>
+            <Router>
+              <InnerApp />
+            </Router>
+          </AuthProvider>
+        </CartProvider>
+      </MaterialsProvider>
+    </SettingsProvider>
   );
 }
 
