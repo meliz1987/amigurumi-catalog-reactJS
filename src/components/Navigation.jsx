@@ -6,7 +6,13 @@ import { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { useAuthContext } from "../contexts/AuthContext";
 import { NavDropdown } from "react-bootstrap";
-import { FaShoppingCart, FaUser, FaTools, FaSignInAlt,FaSignOutAlt } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaUser,
+  FaTools,
+  FaSignInAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
 function Navigation() {
   const { productsCart } = useContext(CartContext);
@@ -54,6 +60,9 @@ function Navigation() {
                 >
                   <NavDropdown.Item as={Link} to="/admin">
                     Panel
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/admin/panel">
+                    Editar Productos
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/admin/agregarProductos">
                     Agregar Productos
