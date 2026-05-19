@@ -3,12 +3,8 @@ import { Card, Button, Form } from "react-bootstrap";
 import { useMaterials } from "../contexts/MaterialsContext";
 
 function MaterialsManager() {
-  const {
-    materialsCatalog,
-    addMaterial,
-    updateMaterial,
-    deleteMaterial,
-  } = useMaterials();
+  const { materialsCatalog, addMaterial, updateMaterial, deleteMaterial } =
+    useMaterials();
 
   const [newMaterial, setNewMaterial] = useState({
     name: "",
@@ -28,10 +24,9 @@ function MaterialsManager() {
     if (!newMaterial.cost || Number(newMaterial.cost) <= 0) return;
 
     addMaterial({
-      name: newMaterial.name,
+      name: newMaterial.name.trim(),
       cost: Number(newMaterial.cost),
     });
-
     setNewMaterial({
       name: "",
       cost: "",
@@ -72,9 +67,7 @@ function MaterialsManager() {
 
   return (
     <Card className="shadow-sm border-0 rounded-4 p-4 mb-4">
-      <h4 className="cute-title mb-4">
-        Catálogo de materiales
-      </h4>
+      <h4 className="cute-title mb-4">Catálogo de materiales</h4>
 
       <div className="d-flex gap-2 mb-4">
         <Form.Control
@@ -102,91 +95,92 @@ function MaterialsManager() {
           }
         />
 
-        <Button onClick={handleAddMaterial}>
-          Agregar
-        </Button>
+        <Button onClick={handleAddMaterial}>Agregar</Button>
       </div>
 
-      {materialsCatalog.map((material) => (
-        <div
-          key={material.id}
-          className="d-flex justify-content-between align-items-center border-bottom py-2"
-        >
-          {editingMaterialId === material.id ? (
-            <>
-              <div className="d-flex gap-2 flex-grow-1 me-3">
-                <Form.Control
-                  type="text"
-                  value={editingMaterial.name}
-                  onChange={(e) =>
-                    setEditingMaterial({
-                      ...editingMaterial,
-                      name: e.target.value,
-                    })
-                  }
-                />
+      {[...materialsCatalog]
+        .sort((a, b) =>
+          a.name
+            .trim()
+            .toLowerCase()
+            .localeCompare(b.name.trim().toLowerCase()),
+        )
+        .map((material) => (
+          <div
+            key={material.id}
+            className="d-flex justify-content-between align-items-center border-bottom py-2"
+          >
+            {editingMaterialId === material.id ? (
+              <>
+                <div className="d-flex gap-2 flex-grow-1 me-3">
+                  <Form.Control
+                    type="text"
+                    value={editingMaterial.name}
+                    onChange={(e) =>
+                      setEditingMaterial({
+                        ...editingMaterial,
+                        name: e.target.value,
+                      })
+                    }
+                  />
 
-                <Form.Control
-                  type="number"
-                  value={editingMaterial.cost}
-                  onChange={(e) =>
-                    setEditingMaterial({
-                      ...editingMaterial,
-                      cost: e.target.value,
-                    })
-                  }
-                />
-              </div>
+                  <Form.Control
+                    type="number"
+                    value={editingMaterial.cost}
+                    onChange={(e) =>
+                      setEditingMaterial({
+                        ...editingMaterial,
+                        cost: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-              <div className="d-flex gap-2">
-                <Button
-                  size="sm"
-                  variant="success"
-                  onClick={handleSaveMaterial}
-                >
-                  Guardar
-                </Button>
+                <div className="d-flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="success"
+                    onClick={handleSaveMaterial}
+                  >
+                    Guardar
+                  </Button>
 
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={handleCancelEdit}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <span>
-                {material.name} — ${material.cost}
-              </span>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <span>
+                  {material.name} — ${material.cost}
+                </span>
 
-              <div className="d-flex gap-2">
-                <Button
-                  size="sm"
-                  variant="warning"
-                  onClick={() =>
-                    handleStartEditMaterial(material)
-                  }
-                >
-                  Editar
-                </Button>
+                <div className="d-flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="warning"
+                    onClick={() => handleStartEditMaterial(material)}
+                  >
+                    Editar
+                  </Button>
 
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() =>
-                    deleteMaterial(material.id)
-                  }
-                >
-                  Eliminar
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-      ))}
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => deleteMaterial(material.id)}
+                  >
+                    Eliminar
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
     </Card>
   );
 }
