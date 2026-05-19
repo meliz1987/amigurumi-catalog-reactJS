@@ -9,6 +9,7 @@ import { useSettings } from "../contexts/SettingsContext";
 import { useMaterials } from "../contexts/MaterialsContext";
 import React, { useState } from "react";
 import MaterialsManager from "./MaterialsManager";
+import "../styles/dashboard.css";
 
 export default function Admin() {
   const { user, logout, admin } = useAuthContext();
@@ -84,7 +85,7 @@ export default function Admin() {
 
       {/* CONFIGURACIÓN */}
       <div className="col-lg-7">
-        <div className="card shadow-sm border-0 rounded-4 p-4 h-100">
+        <div className="dashboard-card shadow-sm p-4 h-100">
 
           <h4 className="cute-title mb-4">
             Configuración global de costos

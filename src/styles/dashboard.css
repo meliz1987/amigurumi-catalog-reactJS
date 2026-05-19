@@ -1,0 +1,30 @@
+.dashboard-card {
+ /* background: linear-gradient(135deg,rgba(111, 87, 207, 0.95),rgba(79, 75, 161, 0.95));*/
+ background: linear-gradient(45deg, #edaeed 2%, #cb79e0 44%, #9179f0 100%);
+
+  /*color: white;*/
+  color: #7066e0;
+
+  border: none;
+
+  border-radius: 1.5rem;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  backdrop-filter: blur(4px);
+}
+
+.dashboard-card .form-control,
+.dashboard-card .form-select {
+  background-color: rgba(255, 255, 255, 0.9);
+
+  border: none;
+}
+
+.dashboard-card .form-label,
+.dashboard-card h4,
+.dashboard-card p,
+.dashboard-card span {
+  /*color: white;*/
+  color: #4f4ba1;
+}

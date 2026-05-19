@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Button, Form } from "react-bootstrap";
 import { useMaterials } from "../contexts/MaterialsContext";
+import "../styles/dashboard.css";
 
 function MaterialsManager() {
   const { materialsCatalog, addMaterial, updateMaterial, deleteMaterial } =
@@ -66,7 +67,7 @@ function MaterialsManager() {
   };
 
   return (
-    <Card className="shadow-sm border-0 rounded-4 p-4 mb-4">
+    <Card className="dashboard-card shadow-sm p-4 mb-4">
       <h4 className="cute-title mb-4">Catálogo de materiales</h4>
 
       <div className="d-flex gap-2 mb-4">
