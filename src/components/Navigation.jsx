@@ -1,21 +1,13 @@
-import { Navbar, Nav, Container, Badge } from "react-bootstrap";
+import { Navbar, Nav, Container} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 import "../styles/nav.css";
-import { useContext } from "react";
-import { CartContext } from "../contexts/CartContext";
 import { useAuthContext } from "../contexts/AuthContext";
 import { NavDropdown } from "react-bootstrap";
-import {
-  FaShoppingCart,
-  FaUser,
-  FaTools,
-  FaSignInAlt,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaUser, FaTools, FaSignInAlt, FaSignOutAlt} from "react-icons/fa";
+import { BsHeartFill } from "react-icons/bs";
 
 function Navigation() {
-  const { productsCart } = useContext(CartContext);
   const { user, isAdmin, logout } = useAuthContext();
 
   return (
@@ -39,14 +31,14 @@ function Navigation() {
                 Contacto
               </Nav.Link>
             </Nav>
+             <Nav className="ms-auto align-items-center">
 
-            <Nav className="ms-auto align-items-center">
-              <Nav.Link as={Link} to="/miCarrito">
-                <FaShoppingCart className="me-1" />
-                Carrito{" "}
-                {productsCart.length > 0 && (
-                  <Badge bg="secondary">{productsCart.length}</Badge>
-                )}
+              <Nav.Link
+                as={Link}
+                to="/favoritos"
+              >
+                <BsHeartFill className="me-1" />
+                Mis favoritos
               </Nav.Link>
 
               {user && isAdmin && (

@@ -1,128 +1,285 @@
-import { useContext, useEffect, useState } from "react";
-import { Link,useParams, useNavigate } from "react-router-dom";
+import { useContext,useEffect,useState} from "react";
+import { Link, useParams, useNavigate} from "react-router-dom";
 import "../styles/productDetail.css";
-import { executeBasicSweet } from "../assets/SweetAlert";
+import { executeBasicSweet} from "../assets/SweetAlert";
 import loadingGif from "../assets/loadingSpinner.gif";
-import { Button, Card as BootstrapCard } from "react-bootstrap";
-import { CartContext } from "../contexts/CartContext";
+import { Button, Card as BootstrapCard} from "react-bootstrap";
 import Footer from "./Footer";
+import { FavoritesContext} from "../contexts/FavoritesContext";
+import { BsInstagram } from "react-icons/bs";
 
+import {
+  useAuthContext,
+} from "../contexts/AuthContext";
+
+import {
+  BsHeart,
+  BsHeartFill,
+} from "react-icons/bs";
 
 function ProductDetail() {
+  const navigate =
+    useNavigate();
 
-  const {addProductToCart} = useContext (CartContext)
-  const [showCartButton, setShowCartButton] = useState(false);
+  const { id } =
+    useParams();
 
+  const { user } =
+    useAuthContext();
 
+  const {
+    favoriteProducts,
+    addFavorite,
+    deleteFavorite,
+  } = useContext(
+    FavoritesContext
+  );
 
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [product,
+    setProduct] =
+    useState(null);
+
+  const [loading,
+    setLoading] =
+    useState(true);
+
+  const [error,
+    setError] =
+    useState(null);
 
   useEffect(() => {
-    fetch("https://68100d8c27f2fdac24101f1f.mockapi.io/products")
-      .then((res) => res.json())
+    fetch(
+      "https://68100d8c27f2fdac24101f1f.mockapi.io/products"
+    )
+      .then((res) =>
+        res.json()
+      )
       .then((data) => {
-        const productFound = data.find((item) => item.id === id);
-        if (productFound) {
-          setProduct(productFound);
+        const productFound =
+          data.find(
+            (item) =>
+              item.id ===
+              id
+          );
+
+        if (
+          productFound
+        ) {
+          setProduct(
+            productFound
+          );
         } else {
-          setError("Producto no encontrado.");
+          setError(
+            "Producto no encontrado."
+          );
         }
-        setLoading(false);
+
+        setLoading(
+          false
+        );
       })
-      .catch((err) => {
-        console.log("Error:", err);
-        setError("Hubo un error al obtener el producto.");
-        setLoading(false);
-      });
+      .catch(
+        (err) => {
+          console.log(
+            "Error:",
+            err
+          );
+
+          setError(
+            "Hubo un error al obtener el producto."
+          );
+
+          setLoading(
+            false
+          );
+        }
+      );
   }, [id]);
 
-  function addToCart() {
-    if (quantity < 1) return;
-    executeBasicSweet(
-      "Producto Agregado",
-      "El producto fue agregado al carrito con éxito",
-      "success",
-      "Cerrar"
-    );
-    addProductToCart({ ...product, quantity });
-    setShowCartButton(true);
-  }
-
-  function addCounter() {
-    setQuantity(quantity + 1);
-  }
-
-  function substractCounter() {
-    if (quantity > 1) setQuantity(quantity - 1);
-  }
-
-  function keepBuying() {
-    navigate("/productos");
-  }
-
-  if (loading)
+  if (loading) {
     return (
       <div className="loading-container">
-        <img src={loadingGif} alt="Cargando..." className="loading-gif" />
-        <p className="cute-title">Cargando producto...</p>
+        <img
+          src={
+            loadingGif
+          }
+          alt="Cargando..."
+          className="loading-gif"
+        />
+
+        <p className="cute-title">
+          Cargando
+          producto...
+        </p>
       </div>
     );
+  }
 
-  if (error) return <p>{error}</p>;
-  if (!product) return null;
+  if (error)
+    return <p>{error}</p>;
+
+  if (!product)
+    return null;
+
+  const isFavorite =
+    favoriteProducts.some(
+      (p) =>
+        p.id ===
+        product.id
+    );
+
+  function handleFavorite() {
+    if (!user) {
+      executeBasicSweet(
+        "Iniciá sesión",
+        "Tenés que iniciar sesión para guardar favoritos",
+        "info",
+        "Cerrar"
+      );
+
+      navigate(
+        "/login"
+      );
+
+      return;
+    }
+
+    if (
+      isFavorite
+    ) {
+      deleteFavorite(
+        product.id
+      );
+
+      executeBasicSweet(
+        "Eliminado",
+        "Se quitó de favoritos",
+        "info",
+        "Cerrar"
+      );
+    } else {
+      addFavorite(
+        product
+      );
+
+      executeBasicSweet(
+        "Guardado",
+        "Se agregó a favoritos",
+        "success",
+        "Cerrar"
+      );
+    }
+  }
+
+  function goProducts() {
+    navigate(
+      "/productos"
+    );
+  }
 
   return (
     <div>
-    <div className="detail-container">
-      <BootstrapCard className="product-detail-card shadow-sm">
-        <BootstrapCard.Img
-          variant="top"
-          src={product.image}
-          alt={product.name}
-          className="detail-image"
-        />
-        <BootstrapCard.Body>
-          <BootstrapCard.Title>{product.name}</BootstrapCard.Title>
-          <BootstrapCard.Text>{product.description}</BootstrapCard.Text>
-          <BootstrapCard.Text>
-            <strong>$ {product.price}</strong>
-          </BootstrapCard.Text>
+      <div className="detail-container">
+        <BootstrapCard className="product-detail-card shadow-sm">
 
-          <div className="detail-counter mb-3">
-            <Button variant="secondary" size="sm" onClick={substractCounter}>
-              -
-            </Button>
-            <span className="mx-2">{quantity}</span>
-            <Button variant="secondary" size="sm" onClick={addCounter}>
-              +
-            </Button>
-          </div>
+          <BootstrapCard.Img
+            variant="top"
+            src={
+              product.image
+            }
+            alt={
+              product.name
+            }
+            className="detail-image"
+          />
 
-        <div className="d-flex flex-column flex-md-row gap-2 mt-3 justify-content-center">
-          <Button variant="success" onClick={addToCart}>Agregar al carrito </Button>
-          <Button variant="primary" onClick={keepBuying} >Seguir comprando </Button>
-          {showCartButton && (
-    <Link to="/miCarrito">
-      <Button variant="outline-primary">
-        Ir a mi carrito
+          <BootstrapCard.Body>
+            <BootstrapCard.Title>
+              {
+                product.name
+              }
+            </BootstrapCard.Title>
+
+            <BootstrapCard.Text>
+              {
+                product.description
+              }
+            </BootstrapCard.Text>
+
+            <BootstrapCard.Text>
+              <strong>
+                $
+                {
+                  product.price
+                }
+              </strong>
+            </BootstrapCard.Text>
+
+          <div className="mt-4">
+
+  {/* fila principal */}
+  <div className="d-flex flex-column flex-md-row gap-2 justify-content-center">
+
+    {user && (
+      <Button
+        variant={
+          isFavorite
+            ? "danger"
+            : "outline-danger"
+        }
+        onClick={handleFavorite}
+      >
+        {isFavorite ? (
+          <>
+            <BsHeartFill /> Quitar favorito
+          </>
+        ) : (
+          <>
+            <BsHeart /> Agregar a favoritos
+          </>
+        )}
       </Button>
-    </Link>
-  )}
+    )}
+
+    <Button
+      variant="primary"
+      onClick={goProducts}
+    >
+      Ver más productos
+    </Button>
   </div>
-        </BootstrapCard.Body>
-      </BootstrapCard>
-      
-      
+
+  {/* botón principal */}
+  <div className="text-center mt-3">
+    <Button
+      as="a"
+      href="https://instagram.com/pinicrochet"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-instagram"
+    >
+      <BsInstagram className="me-2" />
+      ¡Lo quiero!
+    </Button>
+  </div>
+
+  {/* favoritos */}
+  {user && isFavorite && (
+    <div className="text-center mt-3">
+      <Link to="/favoritos">
+        <Button variant="outline-primary">
+          Ir a mis favoritos
+        </Button>
+      </Link>
     </div>
+  )}
+</div>
+          </BootstrapCard.Body>
+        </BootstrapCard>
+      </div>
+
       <Footer />
     </div>
-    
-    
   );
 }
 

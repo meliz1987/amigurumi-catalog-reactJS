@@ -70,7 +70,7 @@ export default function Cart() {
   return (
     <>
       <Helmet>
-        <title>Mi Carrito | Pinicrochet</title>
+        <title>Mis Favoritos | Pinicrochet</title>
         <meta name="description" content="Carrito de compras." />
       </Helmet>
 

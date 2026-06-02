@@ -1,33 +1,198 @@
-import Footer from "./Footer"
-import workerAmigurumi from "/amigurumi_trabajando.png"
-import "../styles/notFound.css";
-import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
+import "../styles/cart.css";
+import { BsTrash, BsHeartFill } from "react-icons/bs";
+import {executeBasicSweet, confirmSweetAlert,} from "../assets/SweetAlert";
+import {Card as BootstrapCard, Button,} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+import { useFavoritesContext } from "../contexts/FavoritesContext";
 import { Helmet } from "react-helmet-async";
-import { FaHome } from "react-icons/fa";
-import { Button } from "react-bootstrap"
+import { FaLock } from "react-icons/fa";
 
-function Favorites (){
-    const navigate = useNavigate();
+function Favorites() {
+  const { user } = useAuthContext();
 
-     function goHome() {
-    navigate("/");
-  }
+ const { favoriteProducts,  deleteFavorite,clearFavorites} = useFavoritesContext();
+
+  /* si NO está logueado */
+  if (!user) {
     return (
-         <div>
-            <Helmet>
-                <title>Mis Favoritos | Pinicrochet</title>
-                <meta name="description" content="Carrito de compras." />
-              </Helmet>
-            <h2 className ="cute-title">Mis favoritos</h2>	
-             <img src = {workerAmigurumi} alt="Amigurumi ppagina en construccion" className="notfound-image"/>
-              <p>Página en construcción.</p>
+      <div className="text-center mt-5 not-logged-container">
+        <FaLock
+          size={50}
+          className="bounce-icon"
+        />
+
+        <h2 className="cute-title">
+          Acceso restringido
+        </h2>
+
+        <p className="mb-4">
+          Para ver tus favoritos primero tenés
+          que iniciar sesión.
+        </p>
+
+        <Link to="/login">
+          <Button
+            variant="outline-primary"
+            className="btn-custom"
+          >
+            Iniciar sesión
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  async function handleClearFavorites() {
+    const result =
+      await confirmSweetAlert({
+        title:
+          "¿Eliminar todos tus favoritos?",
+        confirmText: "Sí",
+        denyText: "No",
+      });
+
+    if (result.isConfirmed) {
+      clearFavorites();
+
+      executeBasicSweet(
+        "Favoritos vacíos",
+        "Se eliminaron todos tus favoritos",
+        "info",
+        "Cerrar"
+      );
+    }
+  }
+
+  function handleRemoveFavorite(id) {
+    executeBasicSweet(
+      "Eliminado",
+      "Se quitó de favoritos",
+      "info",
+      "Cerrar"
+    );
+
+    deleteFavorite(id, true);
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>
+          Mis Favoritos | Pinicrochet
+        </title>
+
+        <meta
+          name="description"
+          content="Lista de favoritos."
+        />
+      </Helmet>
+
+      <h2 className="mb-4 cute-title">
+        <BsHeartFill /> Mis Favoritos
+      </h2>
+
+      <div className="cart-container">
+        {favoriteProducts.length > 0 && (
+          <Button
+            variant="outline-danger"
+            className="mb-3"
+            onClick={
+              handleClearFavorites
+            }
+          >
+            Vaciar favoritos
+          </Button>
+        )}
+
+        {favoriteProducts.length > 0 ? (
+          favoriteProducts.map(
+            (product) => (
+              <BootstrapCard
+                key={product.id}
+                className="mb-3 shadow-sm cart-item-card"
+              >
+                <div className="d-flex align-items-center">
+                  <BootstrapCard.Img
+                    src={
+                      product.image
+                    }
+                    style={{
+                      width: 120,
+                      height: 120,
+                      objectFit:
+                        "cover",
+                      borderRadius: 8,
+                      margin: 10,
+                    }}
+                  />
+
+                  <BootstrapCard.Body>
+                    <BootstrapCard.Title>
+                      {
+                        product.name
+                      }
+                    </BootstrapCard.Title>
+
+                    <BootstrapCard.Text>
+                      Precio: $
+                      {Number(
+                        product.price
+                      ).toFixed(
+                        2
+                      )}
+                    </BootstrapCard.Text>
+
+                    <div className="d-flex gap-2 mt-2">
+                      <Link
+                        to={`/productos/${product.id}`}
+                      >
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                        >
+                          Ver detalle
+                        </Button>
+                      </Link>
+
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() =>
+                          handleRemoveFavorite(
+                            product.id
+                          )
+                        }
+                      >
+                        <BsTrash /> Eliminar
+                      </Button>
+                    </div>
+                  </BootstrapCard.Body>
+                </div>
+              </BootstrapCard>
+            )
+          )
+        ) : (
+          <h3 className="cute-title">
+            No tenés favoritos
+            guardados 💕
+          </h3>
+        )}
+      </div>
+
       <div className="d-flex justify-content-center mt-3">
-  <Button onClick={goHome} className="btn-home d-flex align-items-center gap-2">
-    Volver al inicio <FaHome className="animate-icon" />
-  </Button>
-</div>
-        </div>
-    )
+        <Link to="/productos">
+          <Button variant="secondary">
+            Ver productos
+          </Button>
+        </Link>
+      </div>
+
+      <br />
+      <Footer />
+    </>
+  );
 }
 
-export default Favorites
+export default Favorites;

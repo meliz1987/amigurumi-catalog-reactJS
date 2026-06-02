@@ -66,6 +66,26 @@ button{
   color: white;
 }
 
+.btn-instagram {
+  background: linear-gradient(
+    135deg,
+    #f58529,
+    #dd2a7b,
+    #8134af
+  );
+
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 14px;
+  padding: 10px 22px;
+  transition: 0.2s ease;
+}
+
+.btn-instagram:hover {
+  transform: scale(1.03);
+  color: white;
+}
 
 
 @media (max-width: 768px) {

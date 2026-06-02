@@ -38,7 +38,6 @@ function InnerApp() {
         <Route path="/register" element={<Register />} />
         <Route path="/productos" element={<ProductsContainer />} />
         <Route path="/productos/:id" element={<ProductDetail />} />
-        <Route path="/miCarrito" element={<Cart />} />
         <Route path="/contacto" element={<Contact />} />
         <Route path="/nosotros" element={<About />} />
         <Route path="/checkout" element={<Checkout />} />
