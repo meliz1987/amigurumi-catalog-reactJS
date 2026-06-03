@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuthContext } from '../contexts/AuthContext';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 import { executeBasicSweet } from "../assets/SweetAlert";
-import { loginEmailPass } from '../auth/firebase';
-import '../styles/login.css';
+import { loginEmailPass } from "../auth/firebase";
+import "../styles/login.css";
 import Footer from "./Footer";
 
 function Login() {
-  const [usuario, setUsuario] = useState('');
-  const [password, setPassword] = useState('');
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
   const { login, user, logout } = useAuthContext();
   const navigate = useNavigate();
 
@@ -28,27 +28,39 @@ function Login() {
   // };
 
   const loginEmail = (e) => {
-  e.preventDefault();
-  loginEmailPass(usuario, password).then((userCredential) => {
-    const email = userCredential.email || userCredential.user?.email || usuario;
+    e.preventDefault();
+    loginEmailPass(usuario, password)
+      .then((userCredential) => {
+        const email =
+          userCredential.email || userCredential.user?.email || usuario;
 
-    login(email); // esto setea el usuario en el contexto
+        login(email); // esto setea el usuario en el contexto
 
-    executeBasicSweet("¡Bienvenido!", "Inicio de sesión exitoso", "success", "Ok");
+        executeBasicSweet(
+          "¡Bienvenido!",
+          "Inicio de sesión exitoso",
+          "success",
+          "Ok",
+        );
 
-    // redirige dependiendo del tipo de usuario
-    if (email === "admin@gmail.com") {
-      navigate("/admin");
-    } else {
-      navigate("/perfil");
-    }
-  }).catch((error) => {
-    if (error.code === "auth/invalid-credential") {
-      executeBasicSweet("Oops!", "Credenciales incorrectas", "error", "Cerrar");
-    }
-  });
-};
-
+        // redirige dependiendo del tipo de usuario
+        if (email === "admin@gmail.com") {
+          navigate("/admin");
+        } else {
+          navigate("/perfil");
+        }
+      })
+      .catch((error) => {
+        if (error.code === "auth/invalid-credential") {
+          executeBasicSweet(
+            "Oops!",
+            "Credenciales incorrectas",
+            "error",
+            "Cerrar",
+          );
+        }
+      });
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -62,7 +74,9 @@ function Login() {
           Sesión iniciada como <strong>{user.email || user}</strong>
         </div>
         <form onSubmit={handleLogout} className="text-center">
-          <button type="submit" className="btn btn-danger">Cerrar sesión</button>
+          <button type="submit" className="btn btn-danger">
+            Cerrar sesión
+          </button>
         </form>
       </div>
     );
@@ -105,15 +119,29 @@ function Login() {
               </form>
               <div className="mt-3 text-center">
                 ¿No tenés una cuenta?{" "}
-                <Link to="/register" className="text-white fw-bold text-decoration-underline">
+                <Link
+                  to="/register"
+                  className="text-white fw-bold text-decoration-underline"
+                >
                   Crear cuenta
                 </Link>
+              </div>
+              <div className="mt-3 text-center">
+                ¿Olvidaste tu contraseña?{" "}
+                <a
+                  href="https://www.instagram.com/pinicrochet/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white fw-bold text-decoration-underline"
+                >
+                  Escribinos a nuestro Instagram
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <br/>
+      <br />
       <Footer />
     </div>
   );

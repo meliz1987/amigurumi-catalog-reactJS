@@ -26,6 +26,15 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
     timeSpent: 0,
     materials: [],
   });
+  const emptyProduct = {
+  name: "",
+  price: "",
+  description: "",
+  image: "",
+  productionTime: "",
+  timeSpent: 0,
+  materials: [],
+};
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -44,15 +53,17 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
 
   const validateForm = () => {
     if (!product.name.trim()) return "El nombre es obligatorio.";
-    if (!product.price || product.price <= 0)
-      return "El precio debe ser mayor a 0.";
     if (!product.description.trim() || product.description.length < 10)
       return "La descripción debe tener al menos 10 caracteres.";
     if (!product.image.trim())
       return "La URL de la imagen no debe estar vacía.";
-    if (!product.productionTime) {
+    if (!product.productionTime)
       return "Debe indicar un tiempo de elaboración.";
-    }
+    if (Number(product.timeSpent) <= 0)
+      return "Debe indicar las horas trabajadas.";
+    if (product.materials.length === 0)
+      return "Debe agregar al menos un material.";
+    if (suggestedPrice <= 0) return "El precio calculado debe ser mayor a 0.";
     return true;
   };
 
@@ -219,7 +230,7 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
             <Form.Group className="mb-3">
               <Form.Label>Materiales</Form.Label>
 
-              {product.materials.map((material, index) => (
+              {product.materials?.map((material, index) => (
                 <div key={index} className="d-flex gap-2 mb-2">
                   <Form.Select
                     value={material.name}
