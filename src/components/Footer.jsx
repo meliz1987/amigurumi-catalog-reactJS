@@ -22,7 +22,7 @@ function Footer() {
           {/* Info de Pinicrochet */}
           <div className="col-12 col-md-4">
             <h5>Pinicrochet</h5>
-            <p>Amigurumis con alma, hechos a mano desde Pilar 💕</p>
+            <p>Amigurumis con alma, hechos con amor 💕</p>
 
             {/* Iconos de redes */}
             <div className="social-icons">
