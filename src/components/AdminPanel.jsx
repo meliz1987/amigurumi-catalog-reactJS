@@ -80,8 +80,6 @@ function AdminPanel() {
     setProducts((prev) => [...prev, newProduct]);
   };
 
- 
-
   //edicion de catalogo de materiales-
   const handleStartEditMaterial = (material) => {
     setEditingMaterialId(material.id);
@@ -129,9 +127,9 @@ function AdminPanel() {
         mode={editProduct ? "edit" : "create"}
         initialData={editProduct}
         onSubmit={editProduct ? handleUpdate : handleAdd}
-      />    
+      />
 
-       <MaterialsManager />  
+      <MaterialsManager />
 
       <h3 className="mt-5 mb-3 cute-title"> Catálogo de productos actuales</h3>
 
@@ -175,6 +173,9 @@ function AdminPanel() {
                 <Card.Subtitle className="mb-2 text-muted">
                   ${product.price}
                 </Card.Subtitle>
+                <Card.Text className="mb-1">
+                  Tiempo estimado: {product.productionTime}
+                </Card.Text>
                 <Card.Text className="mb-2">{product.description}</Card.Text>
 
                 <div className="d-flex gap-2">

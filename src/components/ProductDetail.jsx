@@ -116,7 +116,7 @@ function ProductDetail() {
             <BootstrapCard.Title> {product.name} </BootstrapCard.Title>
             <BootstrapCard.Text> {product.description} </BootstrapCard.Text>
            {product.productionTime && (<BootstrapCard.Text className="text-muted">
-    Tiempo estimado de elaboración (días): {product.productionTime}
+    Plazo estimado de entrega (días): {product.productionTime}
   </BootstrapCard.Text>)}
 
             {isAdmin ? (

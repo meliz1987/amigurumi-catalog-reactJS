@@ -50,9 +50,9 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
       return "La descripción debe tener al menos 10 caracteres.";
     if (!product.image.trim())
       return "La URL de la imagen no debe estar vacía.";
-    if (!product.productionTime.trim()) {
-  return "Debe indicar un tiempo de elaboración.";
-}
+    if (!product.productionTime) {
+      return "Debe indicar un tiempo de elaboración.";
+    }
     return true;
   };
 
@@ -191,15 +191,16 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                 </div>
               )}
             </Form.Group>
-
-            <Form.Group controlId="price" className="mb-3">
-              <Form.Label>Precio final</Form.Label>
+            <Form.Group controlId="description" className="mb-4">
+              <Form.Label>Descripción</Form.Label>
 
               <Form.Control
-                type="number"
-                name="price"
-                value={suggestedPrice.toFixed(2)}
-                readOnly
+                as="textarea"
+                name="description"
+                value={product.description}
+                onChange={handleChange}
+                rows={3}
+                required
               />
             </Form.Group>
 
@@ -255,47 +256,79 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                   <Form.Control type="number" value={material.cost} readOnly />
                 </div>
               ))}
-
-              <Button variant="secondary" type="button" onClick={addMaterial}>
-                Agregar material
-              </Button>
+              <div>
+                <Button
+                  variant="secondary"
+                  type="button"
+                  onClick={addMaterial}
+                  className="mt-2"
+                >
+                  + Agregar material
+                </Button>
+              </div>
             </Form.Group>
 
-            <Form.Group controlId="description" className="mb-4">
-              <Form.Label>Descripción</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="description"
-                value={product.description}
-                onChange={handleChange}
-                rows={3}
-                required
-              />
-              {/* Tiempo de elaboración */}
-            </Form.Group>
+            {/* Tiempo de elaboración */}
             <Form.Group className="mb-3">
-              <Form.Label>Tiempo de elaboración</Form.Label>
+              <Form.Label>Plazo estimado de entrega</Form.Label>
 
-              <Form.Control
-                type="text"
+              <Form.Select
                 name="productionTime"
                 value={product.productionTime}
                 onChange={handleChange}
-                placeholder="Ej: 7 días hábiles"
-              />
+              >
+                <option value="">Seleccionar plazo...</option>
+
+                <option value="Disponible para entrega inmediata">
+                  Disponible para entrega inmediata
+                </option>
+
+                <option value="3 a 5 días hábiles">3 a 5 días hábiles</option>
+
+                <option value="7 días hábiles">7 días hábiles</option>
+
+                <option value="10 a 15 días hábiles">
+                  10 a 15 días hábiles
+                </option>
+
+                <option value="15 a 20 días hábiles">
+                  15 a 20 días hábiles
+                </option>
+
+                <option value="Más de 20 días hábiles">
+                  Más de 20 días hábiles
+                </option>
+              </Form.Select>
             </Form.Group>
 
-            <div className="mb-4">
+            <Card className="p-3 mt-4 mb-4">
+              <h5 className="mb-3">Resumen de costos</h5>
+
               <div>
                 Mano de obra: {laborCost.toFixed(2)} {settings.currency}
               </div>
+
               <div>
                 Materiales: {materialsCost.toFixed(2)} {settings.currency}
               </div>
+
+              <hr />
+
               <strong>
                 Precio sugerido: {suggestedPrice.toFixed(2)} {settings.currency}
               </strong>
-            </div>
+
+              <Form.Group controlId="price" className="mb-4">
+                <Form.Label>Precio final calculado</Form.Label>
+
+                <Form.Control
+                  type="number"
+                  name="price"
+                  value={suggestedPrice.toFixed(2)}
+                  readOnly
+                />
+              </Form.Group>
+            </Card>
 
             <div className="d-flex justify-content-between align-items-center">
               <Link to="/productos" className="btn btn-secondary">
