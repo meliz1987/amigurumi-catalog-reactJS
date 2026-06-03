@@ -46,23 +46,6 @@ function Contact() {
           <button type="submit" className="btn btn-primary">Enviar</button>
         </form>
 
-        <h3 className="mt-5 cute-title">🚶‍♂️ Visitanos en nuestra tienda</h3>
-        <p>Si estás cerca, ¡será un gusto conocerte en persona! Nos encontramos en:</p>
-        <p><strong>Dirección:</strong> Las Magnolias 754 (Shopping Palmas del Pilar), local 15</p>
-
-        <div className="map mb-4 text-center">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3290.230914912367!2d-58.87303848813515!3d-34.44628577289852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc9c5713587819%3A0x39ea2834d34ffd98!2sPalmas%20del%20Pilar!5e0!3m2!1ses-419!2sar!4v1728914194369!5m2!1ses-419!2sar"
-            width="100%"
-            height="350"
-            style={{ border: 0, borderRadius: "8px" }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Ubicación Pinicrochet"
-          ></iframe>
-        </div>
-
         <h3 className="mt-4 cute-title">💻 Otras formas de contactarnos</h3>
         <p>
           También podés encontrarnos en nuestras redes sociales o enviarnos un email a{" "}
