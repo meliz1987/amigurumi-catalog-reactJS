@@ -30,8 +30,8 @@ h1{
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: white;
   display: flex;
@@ -41,12 +41,12 @@ h1{
   cursor: pointer;
   font-size: 1.2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  z-index: 10;
-  transition: 0.2s ease;
+  z-index: 100;
+  transition: all 0.2s ease;
 }
 
 .favorite-icon:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .product-image{

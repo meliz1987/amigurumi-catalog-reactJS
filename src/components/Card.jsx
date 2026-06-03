@@ -1,7 +1,6 @@
 import { Button, Card as BootstrapCard } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../styles/product.css";
-import Footer from "../components/Footer";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
@@ -13,7 +12,7 @@ function Card({ product }) {
   /*logica de agregar a favoritos */
   const navigate = useNavigate();
 
-  const { user } = useAuthContext();
+  const { user, isAdmin } = useAuthContext();
 
   const { favoriteProducts, addFavorite, deleteFavorite } =
     useContext(FavoritesContext);
@@ -44,10 +43,10 @@ function Card({ product }) {
   }
   return (
     <BootstrapCard className="product-card shadow-sm mb-3">
-      <Link to={`/productos/${product.id}`}>
-        <div className="favorite-icon" onClick={handleFavorite}>
-          {isFavorite ? <BsHeartFill /> : <BsHeart />}
-        </div>
+      <div className="favorite-icon"  onClick={handleFavorite}>
+    {isFavorite ? ( <BsHeartFill /> ) : (<BsHeart /> )}
+  </div>
+      <Link to={`/productos/${product.id}`}>     
         <BootstrapCard.Img
           variant="top"
           src={product.image}
@@ -57,9 +56,15 @@ function Card({ product }) {
       </Link>
       <BootstrapCard.Body>
         <BootstrapCard.Title>{product.name}</BootstrapCard.Title>
-        <BootstrapCard.Text>
-          <strong>$ {product.price}</strong>
-        </BootstrapCard.Text>
+       {isAdmin ? (
+  <BootstrapCard.Text>
+    <strong>$ {product.price}</strong>
+  </BootstrapCard.Text>
+) : (
+  <BootstrapCard.Text className="text-muted">
+    Consultar precio por Instagram 💕
+  </BootstrapCard.Text>
+)}
         <Link to={`/productos/${product.id}`}>
           <Button style={{ background: "#4f4ba1", borderColor: "#4f4ba1" }}>
             Ver más

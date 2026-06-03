@@ -22,6 +22,7 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
     price: "",
     description: "",
     image: "",
+    productionTime: "",
     timeSpent: 0,
     materials: [],
   });
@@ -33,6 +34,7 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
         price: "",
         description: "",
         image: "",
+        productionTime: "",
         timeSpent: 0,
         materials: [],
         ...initialData,
@@ -48,6 +50,9 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
       return "La descripción debe tener al menos 10 caracteres.";
     if (!product.image.trim())
       return "La URL de la imagen no debe estar vacía.";
+    if (!product.productionTime.trim()) {
+  return "Debe indicar un tiempo de elaboración.";
+}
     return true;
   };
 
@@ -265,6 +270,18 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                 onChange={handleChange}
                 rows={3}
                 required
+              />
+              {/* Tiempo de elaboración */}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Tiempo de elaboración</Form.Label>
+
+              <Form.Control
+                type="text"
+                name="productionTime"
+                value={product.productionTime}
+                onChange={handleChange}
+                placeholder="Ej: 7 días hábiles"
               />
             </Form.Group>
 
