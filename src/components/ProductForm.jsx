@@ -18,15 +18,6 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
   const { addProduct: addToContext, editProduct: editInContext } =
     useContext(ProductsContext);
 
-  const [product, setProduct] = useState({
-    name: "",
-    price: "",
-    description: "",
-    image: "",
-    productionTime: "",
-    timeSpent: 0,
-    materials: [],
-  });
   const emptyProduct = {
     name: "",
     price: "",
@@ -36,17 +27,12 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
     timeSpent: 0,
     materials: [],
   };
+  const [product, setProduct] = useState(emptyProduct);
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
       setProduct({
-        name: "",
-        price: "",
-        description: "",
-        image: "",
-        productionTime: "",
-        timeSpent: 0,
-        materials: [],
+        ...emptyProduct,
         ...initialData,
       });
     }
@@ -146,7 +132,7 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
           "success",
           "Cerrar",
         );
-        setProduct({ name: "", price: "", description: "", image: "" });
+        setProduct({ ...emptyProduct });
         onSubmit?.(newProduct);
       }
     } catch (error) {
@@ -278,9 +264,16 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                   </Form.Select>
 
                   <Form.Control type="number" value={material.cost} readOnly />
-                  <Button  variant="link" type="button"
+                  <Button
+                    variant="link"
+                    type="button"
                     onClick={() => removeMaterial(index)}
-                    style={{ color: "white", textDecoration: "none", padding: "0.375rem" }} >
+                    style={{
+                      color: "white",
+                      textDecoration: "none",
+                      padding: "0.375rem",
+                    }}
+                  >
                     <BsTrash />
                   </Button>
                 </div>
