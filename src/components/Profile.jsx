@@ -36,10 +36,10 @@ function Profile() {
         <p>Sesión iniciada como <strong>{user?.email || user}</strong></p>
 
         <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-          <Link to="/miCarrito" className="btn btn-outline-primary">
+         {/* <Link to="/miCarrito" className="btn btn-outline-primary">
             <FaShoppingCart className="me-2" />
             Ir a mi carrito
-          </Link>
+          </Link>*/}
           <Link to="/favoritos" className="btn btn-outline-primary">
             <FaHeart className="me-2" />
             Ver mis favoritos
