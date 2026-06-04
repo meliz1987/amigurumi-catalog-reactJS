@@ -253,14 +253,21 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                   >
                     <option value="">Seleccionar material</option>
 
-                    {materialsCatalog.map((catalogMaterial) => (
-                      <option
-                        key={catalogMaterial.id}
-                        value={catalogMaterial.name}
-                      >
-                        {catalogMaterial.name}
-                      </option>
-                    ))}
+                    {/* Opciones de materiales del catálogo,ordenadas alfabeticamente*/}
+                    {[...materialsCatalog]
+                      .sort((a, b) =>
+                        a.name.localeCompare(b.name, "es", {
+                          sensitivity: "base",
+                        }),
+                      )
+                      .map((catalogMaterial) => (
+                        <option
+                          key={catalogMaterial.id}
+                          value={catalogMaterial.name}
+                        >
+                          {catalogMaterial.name}
+                        </option>
+                      ))}
                   </Form.Select>
 
                   <Form.Control type="number" value={material.cost} readOnly />
