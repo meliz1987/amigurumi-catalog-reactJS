@@ -9,6 +9,7 @@ import { ProductsContext } from "../contexts/ProductsContext";
 import Footer from "./Footer";
 import { useSettings } from "../contexts/SettingsContext";
 import { useMaterials } from "../contexts/MaterialsContext";
+import { BsTrash } from "react-icons/bs";
 
 function ProductForm({ mode = "create", initialData = null, onSubmit }) {
   const { admin } = useAuthContext();
@@ -27,14 +28,14 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
     materials: [],
   });
   const emptyProduct = {
-  name: "",
-  price: "",
-  description: "",
-  image: "",
-  productionTime: "",
-  timeSpent: 0,
-  materials: [],
-};
+    name: "",
+    price: "",
+    description: "",
+    image: "",
+    productionTime: "",
+    timeSpent: 0,
+    materials: [],
+  };
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -85,6 +86,15 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
     setProduct({
       ...product,
       materials: [...product.materials, { name: "", cost: 0 }],
+    });
+  };
+
+  const removeMaterial = (indexToDelete) => {
+    setProduct({
+      ...product,
+      materials: product.materials.filter(
+        (_, index) => index !== indexToDelete,
+      ),
     });
   };
 
@@ -231,7 +241,10 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
               <Form.Label>Materiales</Form.Label>
 
               {product.materials?.map((material, index) => (
-                <div key={index} className="d-flex gap-2 mb-2">
+                <div
+                  key={index}
+                  className="d-flex gap-2 mb-2 align-items-center"
+                >
                   <Form.Select
                     value={material.name}
                     onChange={(e) => {
@@ -265,6 +278,11 @@ function ProductForm({ mode = "create", initialData = null, onSubmit }) {
                   </Form.Select>
 
                   <Form.Control type="number" value={material.cost} readOnly />
+                  <Button  variant="link" type="button"
+                    onClick={() => removeMaterial(index)}
+                    style={{ color: "white", textDecoration: "none", padding: "0.375rem" }} >
+                    <BsTrash />
+                  </Button>
                 </div>
               ))}
               <div>
